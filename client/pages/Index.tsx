@@ -29,13 +29,27 @@ const Confetti = () => {
   );
 };
 
-const FloatingDecoration = ({ emoji, className }: { emoji: string; className: string }) => (
+const FloatingDecoration = ({
+  emoji,
+  className,
+}: {
+  emoji: string;
+  className: string;
+}) => (
   <div className={`absolute text-4xl md:text-6xl animate-float ${className}`}>
     {emoji}
   </div>
 );
 
-const AnimatedBall = ({ color, size, delay }: { color: string; size: string; delay: number }) => (
+const AnimatedBall = ({
+  color,
+  size,
+  delay,
+}: {
+  color: string;
+  size: string;
+  delay: number;
+}) => (
   <div
     className={`absolute ${color} ${size} rounded-full blur-2xl opacity-60`}
     style={{
@@ -98,21 +112,23 @@ const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
               <div
                 key={`${startDelay}-${xPos}-${i}`}
                 className={`absolute ${particleColors[Math.floor(Math.random() * particleColors.length)]} animate-spark-burst`}
-                style={{
-                  left: `${xPos}%`,
-                  top: "50%",
-                  "--tx": `${tx}px`,
-                  "--ty": `${ty}px`,
-                  fontSize: Math.random() > 0.5 ? "16px" : "12px",
-                  animationDelay: `${startDelay}s`,
-                  opacity: 0.8,
-                } as React.CSSProperties}
+                style={
+                  {
+                    left: `${xPos}%`,
+                    top: "50%",
+                    "--tx": `${tx}px`,
+                    "--ty": `${ty}px`,
+                    fontSize: Math.random() > 0.5 ? "16px" : "12px",
+                    animationDelay: `${startDelay}s`,
+                    opacity: 0.8,
+                  } as React.CSSProperties
+                }
               >
                 •
               </div>
             );
-          })
-        )
+          }),
+        ),
       )}
 
       {/* Glowing light effects */}
@@ -161,10 +177,16 @@ const WishesCard = ({ onNext }: { onNext: () => void }) => {
       <AnimatedBall color="bg-festive-gold" size="w-72 h-72" delay={1} />
 
       {/* Floating decorations */}
-      <FloatingDecoration emoji="🎄" className="top-10 left-5 md:left-20 animate-pulse-glow" />
+      <FloatingDecoration
+        emoji="🎄"
+        className="top-10 left-5 md:left-20 animate-pulse-glow"
+      />
       <FloatingDecoration emoji="🎅" className="top-32 right-8 md:right-24" />
       <FloatingDecoration emoji="🎁" className="bottom-32 left-10 md:left-32" />
-      <FloatingDecoration emoji="❄️" className="bottom-20 right-5 md:right-16" />
+      <FloatingDecoration
+        emoji="❄️"
+        className="bottom-20 right-5 md:right-16"
+      />
       <FloatingDecoration emoji="⛄" className="top-1/2 left-8 md:left-16" />
       <FloatingDecoration emoji="🌟" className="top-1/3 right-5 md:right-12" />
 
@@ -188,7 +210,8 @@ const WishesCard = ({ onNext }: { onNext: () => void }) => {
               A Special Wish For You
             </h2>
             <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-              As this new year begins, I just want us to start with a heart full of hope, calm, and togetherness.
+              As this new year begins, I just want us to start with a heart full
+              of hope, calm, and togetherness.
             </p>
             <div className="pt-6">
               <p className="text-festive-purple font-bold text-lg animate-bounce">
@@ -220,21 +243,24 @@ const songs: Song[] = [
   {
     id: 1,
     title: "Song of Joy",
-    message: "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
+    message:
+      "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
     emoji: "🎵",
     youtubeId: "90qE26nETds",
   },
   {
     id: 2,
     title: "Melody of Love",
-    message: "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
+    message:
+      "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
     emoji: "💫",
     youtubeId: "U2SVCCENLjE",
   },
   {
     id: 3,
     title: "Song of Dreams",
-    message: "This new year, I wish for gentle moments, honest smiles, and a love that grows quietly stronger — just us, moving forward together.",
+    message:
+      "This new year, I wish for gentle moments, honest smiles, and a love that grows quietly stronger — just us, moving forward together.",
     emoji: "✨",
     youtubeId: "xEALTVLxrDw",
   },
@@ -260,7 +286,9 @@ const SongCard = ({
     >
       <div className="text-center space-y-4">
         <div className="text-5xl md:text-6xl">{song.emoji}</div>
-        <h3 className="text-xl md:text-2xl font-bold text-gray-800">{song.title}</h3>
+        <h3 className="text-xl md:text-2xl font-bold text-gray-800">
+          {song.title}
+        </h3>
         <p className="text-gray-600 text-sm md:text-base">{song.message}</p>
         <div className="pt-4">
           <p className="text-festive-purple font-bold text-sm">
@@ -274,7 +302,9 @@ const SongCard = ({
 
 const SongsStep = ({ onNext }: { onNext: () => void }) => {
   const [playedSongs, setPlayedSongs] = useState<number[]>([]);
-  const [backgroundMusicId, setBackgroundMusicId] = useState<number | null>(null);
+  const [backgroundMusicId, setBackgroundMusicId] = useState<number | null>(
+    null,
+  );
 
   const handlePlaySong = (id: number) => {
     if (!playedSongs.includes(id)) {
@@ -294,10 +324,16 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
       <AnimatedBall color="bg-festive-gold" size="w-72 h-72" delay={1} />
 
       {/* Floating decorations */}
-      <FloatingDecoration emoji="🎵" className="top-10 left-5 md:left-20 animate-pulse-glow" />
+      <FloatingDecoration
+        emoji="🎵"
+        className="top-10 left-5 md:left-20 animate-pulse-glow"
+      />
       <FloatingDecoration emoji="💕" className="top-32 right-8 md:right-24" />
       <FloatingDecoration emoji="🎶" className="bottom-32 left-10 md:left-32" />
-      <FloatingDecoration emoji="🎼" className="bottom-20 right-5 md:right-16" />
+      <FloatingDecoration
+        emoji="🎼"
+        className="bottom-20 right-5 md:right-16"
+      />
 
       {/* Background music player (hidden, continues in background) */}
       {backgroundMusicId && (
@@ -363,7 +399,8 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
 
           {!allSongsPlayed && (
             <p className="text-gray-600 text-center text-base md:text-lg">
-              Play all {3 - playedSongs.length} more song{3 - playedSongs.length !== 1 ? "s" : ""} to continue ✨
+              Play all {3 - playedSongs.length} more song
+              {3 - playedSongs.length !== 1 ? "s" : ""} to continue ✨
             </p>
           )}
         </div>
@@ -392,10 +429,16 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
       <AnimatedBall color="bg-festive-gold" size="w-72 h-72" delay={1} />
 
       {/* Floating decorations */}
-      <FloatingDecoration emoji="🎄" className="top-10 left-5 md:left-20 animate-pulse-glow" />
+      <FloatingDecoration
+        emoji="🎄"
+        className="top-10 left-5 md:left-20 animate-pulse-glow"
+      />
       <FloatingDecoration emoji="🎅" className="top-32 right-8 md:right-24" />
       <FloatingDecoration emoji="🎁" className="bottom-32 left-10 md:left-32" />
-      <FloatingDecoration emoji="❄️" className="bottom-20 right-5 md:right-16" />
+      <FloatingDecoration
+        emoji="❄️"
+        className="bottom-20 right-5 md:right-16"
+      />
       <FloatingDecoration emoji="⛄" className="top-1/2 left-8 md:left-16" />
       <FloatingDecoration emoji="🌟" className="top-1/3 right-5 md:right-12" />
 
@@ -420,16 +463,22 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
             </h2>
             <div className="space-y-4">
               <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                This year is a gift, and having you in my life makes it even more special. Through every song, every wish, and every moment, know that you are truly cherished.
+                This year is a gift, and having you in my life makes it even
+                more special. Through every song, every wish, and every moment,
+                know that you are truly cherished.
               </p>
               <p className="text-festive-purple font-bold text-lg">
-                Here's to a year filled with love, laughter, and countless beautiful memories together! 💫
+                Here's to a year filled with love, laughter, and countless
+                beautiful memories together! 💫
               </p>
             </div>
 
             <div className="pt-8 grid grid-cols-3 gap-4 text-4xl md:text-5xl">
               <span className="animate-float">💕</span>
-              <span className="animate-float" style={{ animationDelay: "0.5s" }}>
+              <span
+                className="animate-float"
+                style={{ animationDelay: "0.5s" }}
+              >
                 ✨
               </span>
               <span className="animate-float" style={{ animationDelay: "1s" }}>
@@ -441,7 +490,8 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
 
         <div className="mt-12 md:mt-16 text-center max-w-2xl">
           <p className="text-gray-600 text-sm md:text-base">
-            Wishing you infinite happiness and endless blessings in this new year! 🌟
+            Wishing you infinite happiness and endless blessings in this new
+            year! 🌟
           </p>
         </div>
       </div>
