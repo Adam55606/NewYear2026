@@ -1,5 +1,71 @@
 import { useState, useEffect } from "react";
 
+const Rocket = ({
+  showExplosion,
+  rocketX,
+}: {
+  showExplosion: boolean;
+  rocketX: number;
+}) => (
+  <div className="relative">
+    {/* Rocket trail */}
+    <div
+      className="absolute bottom-0 w-1 bg-gradient-to-t from-yellow-400 via-orange-400 to-transparent animate-rocket-trail"
+      style={{
+        left: `${rocketX}%`,
+        height: "100%",
+      }}
+    />
+
+    {/* Rocket body */}
+    <div
+      className="absolute bottom-0 text-6xl animate-rocket-launch"
+      style={{
+        left: `${rocketX}%`,
+        transform: "translateX(-50%)",
+      }}
+    >
+      🚀
+    </div>
+
+    {/* Explosion effect */}
+    {showExplosion && (
+      <>
+        <div
+          className="absolute top-0 w-32 h-32 bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 rounded-full animate-blast-explosion blur-2xl"
+          style={{
+            left: `calc(${rocketX}% - 4rem)`,
+            bottom: "100vh",
+          }}
+        />
+        {/* Spark bursts */}
+        {Array.from({ length: 12 }).map((_, i) => {
+          const angle = (i / 12) * Math.PI * 2;
+          const distance = 150;
+          const tx = Math.cos(angle) * distance;
+          const ty = Math.sin(angle) * distance;
+
+          return (
+            <div
+              key={i}
+              className="absolute text-2xl animate-spark-burst"
+              style={{
+                left: `${rocketX}%`,
+                bottom: "100vh",
+                transform: "translateX(-50%)",
+                "--tx": `${tx}px`,
+                "--ty": `${ty}px`,
+              } as React.CSSProperties}
+            >
+              ✨
+            </div>
+          );
+        })}
+      </>
+    )}
+  </div>
+);
+
 const Confetti = () => {
   const confetti = Array.from({ length: 50 }, (_, i) => ({
     id: i,
@@ -45,16 +111,59 @@ const AnimatedBall = ({ color, size, delay }: { color: string; size: string; del
   />
 );
 
+const RocketIntro = ({ onComplete }: { onComplete: () => void }) => {
+  const [showExplosion, setShowExplosion] = useState(false);
+  const rocketX = 50;
+
+  useEffect(() => {
+    const explosionTimer = setTimeout(() => {
+      setShowExplosion(true);
+    }, 2800);
+
+    const completeTimer = setTimeout(() => {
+      onComplete();
+    }, 4500);
+
+    return () => {
+      clearTimeout(explosionTimer);
+      clearTimeout(completeTimer);
+    };
+  }, [onComplete]);
+
+  return (
+    <div className="fixed inset-0 bg-gradient-to-b from-gray-900 via-blue-900 to-indigo-900 flex items-center justify-center overflow-hidden z-50">
+      {/* Stars background */}
+      {Array.from({ length: 100 }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 bg-white rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.7 + 0.3,
+            animation: `pulse ${2 + Math.random() * 3}s infinite`,
+          }}
+        />
+      ))}
+
+      {/* Rocket */}
+      <Rocket showExplosion={showExplosion} rocketX={rocketX} />
+    </div>
+  );
+};
+
 export default function Index() {
   const [personalName, setPersonalName] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    setShowConfetti(true);
-    const timer = setTimeout(() => setShowConfetti(false), 5000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (showConfetti) {
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showConfetti]);
 
   const handleWish = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +171,10 @@ export default function Index() {
     setSubmitted(true);
     setTimeout(() => setShowConfetti(false), 5000);
   };
+
+  if (showIntro) {
+    return <RocketIntro onComplete={() => setShowIntro(false)} />;
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-festive-cream via-white to-purple-100">
