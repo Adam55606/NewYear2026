@@ -57,6 +57,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        festive: {
+          purple: "hsl(var(--festive-purple))",
+          pink: "hsl(var(--festive-pink))",
+          gold: "hsl(var(--festive-gold))",
+          cream: "hsl(var(--festive-cream))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,10 +86,50 @@ export default {
             height: "0",
           },
         },
+        "float": {
+          "0%, 100%": {
+            transform: "translateY(0px)",
+          },
+          "50%": {
+            transform: "translateY(-20px)",
+          },
+        },
+        "pulse-glow": {
+          "0%, 100%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "0.7",
+          },
+        },
+        "sparkle": {
+          "0%, 100%": {
+            opacity: "0",
+            transform: "scale(0)",
+          },
+          "50%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+        },
+        "confetti-fall": {
+          "0%": {
+            opacity: "1",
+            transform: "translateY(-10vh) rotate(0deg)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translateY(100vh) rotate(360deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 3s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "sparkle": "sparkle 2s ease-in-out infinite",
+        "confetti-fall": "confetti-fall 3s ease-out forwards",
       },
     },
   },
