@@ -266,12 +266,19 @@ const SongCard = ({
 const SongsStep = ({ onNext }: { onNext: () => void }) => {
   const [playedSongs, setPlayedSongs] = useState<number[]>([]);
   const [showYoutube, setShowYoutube] = useState<number | null>(null);
+  const [backgroundMusicId, setBackgroundMusicId] = useState<number | null>(null);
 
   const handlePlaySong = (id: number) => {
     if (!playedSongs.includes(id)) {
       setPlayedSongs([...playedSongs, id]);
     }
     setShowYoutube(id);
+    setBackgroundMusicId(id);
+  };
+
+  const handleCloseModal = () => {
+    setShowYoutube(null);
+    // Background music continues playing
   };
 
   const allSongsPlayed = playedSongs.length === 3;
@@ -289,12 +296,27 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
       <FloatingDecoration emoji="🎶" className="bottom-32 left-10 md:left-32" />
       <FloatingDecoration emoji="🎼" className="bottom-20 right-5 md:right-16" />
 
+      {/* Background music player (hidden) */}
+      {backgroundMusicId && (
+        <audio
+          key={`bg-${backgroundMusicId}`}
+          autoPlay
+          loop
+          style={{ display: "none" }}
+        >
+          <source
+            src={`https://www.youtube.com/watch?v=${songs.find((s) => s.id === backgroundMusicId)?.youtubeId}`}
+            type="audio/mp4"
+          />
+        </audio>
+      )}
+
       {/* YouTube modal */}
       {showYoutube && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-40 p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 max-w-2xl w-full">
             <button
-              onClick={() => setShowYoutube(null)}
+              onClick={handleCloseModal}
               className="float-right text-gray-600 hover:text-gray-800 text-2xl mb-4"
             >
               ✕
@@ -337,20 +359,25 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
           ))}
         </div>
 
-        {allSongsPlayed && (
-          <button
-            onClick={onNext}
-            className="bg-gradient-to-r from-festive-purple to-festive-pink hover:shadow-lg text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl animate-bounce"
-          >
-            Continue to Final Message 💝
-          </button>
-        )}
+        <div className="flex flex-col items-center gap-4">
+          {allSongsPlayed && (
+            <button
+              onClick={() => {
+                setBackgroundMusicId(null);
+                onNext();
+              }}
+              className="bg-gradient-to-r from-festive-purple to-festive-pink hover:shadow-lg text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl animate-bounce"
+            >
+              Continue to Final Message 💝
+            </button>
+          )}
 
-        {!allSongsPlayed && (
-          <p className="text-gray-600 text-center text-base md:text-lg">
-            Play all {3 - playedSongs.length} more song{3 - playedSongs.length !== 1 ? "s" : ""} to continue ✨
-          </p>
-        )}
+          {!allSongsPlayed && (
+            <p className="text-gray-600 text-center text-base md:text-lg">
+              Play all {3 - playedSongs.length} more song{3 - playedSongs.length !== 1 ? "s" : ""} to continue ✨
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
