@@ -216,8 +216,8 @@ const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
 
       {/* Completion text */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center z-10">
-        <p className="text-white text-2xl md:text-3xl font-bold animate-fade-in">
-          ✨ Happy New Year ✨
+        <p className="text-white text-4xl md:text-5xl font-bold animate-fade-in">
+          ✨ Happy New Year 2026 ✨
         </p>
       </div>
     </div>
@@ -260,9 +260,9 @@ const WishesCard = ({ onNext }: { onNext: () => void }) => {
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full animate-fade-in">
         <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
+          <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold mb-6">
             <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
-              Happy New Year!
+              Happy New Year 2026!
             </span>
           </h1>
         </div>
@@ -272,16 +272,16 @@ const WishesCard = ({ onNext }: { onNext: () => void }) => {
           className="relative bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl w-full border border-purple-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
         >
           <div className="text-center space-y-6">
-            <div className="text-6xl md:text-7xl">💝</div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+            <div className="text-7xl md:text-8xl">💝</div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
               A Special Wish For You
             </h2>
-            <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+            <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
               As this new year begins, I just want us to start with a heart full
               of hope, calm, and togetherness.
             </p>
             <div className="pt-6">
-              <p className="text-festive-purple font-bold text-lg animate-bounce">
+              <p className="text-festive-purple font-bold text-xl md:text-2xl animate-bounce">
                 Click to continue ✨
               </p>
             </div>
@@ -346,8 +346,8 @@ const SongCard = ({
     <button
       onClick={() => onPlay(song.id)}
       className={`group relative bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${isPlayed
-          ? "border-festive-gold bg-gradient-to-br from-yellow-50 to-white"
-          : "border-purple-200 hover:border-festive-purple"
+        ? "border-festive-gold bg-gradient-to-br from-yellow-50 to-white"
+        : "border-purple-200 hover:border-festive-purple"
         }`}
     >
       <div className="text-center space-y-4">
@@ -429,12 +429,12 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 md:px-8">
         <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
-              Special Songs For You
+              Special Songs For You 2026
             </span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 font-medium">
+          <p className="text-xl sm:text-2xl text-gray-600 font-medium">
             Listen to these melodies filled with love and wishes
           </p>
         </div>
@@ -511,35 +511,35 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 md:px-8">
         <div className="text-center mb-8 md:mb-12 max-w-4xl mx-auto">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-4 md:mb-6">
+          <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold mb-4 md:mb-6">
             <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
-              Happy New Year!
+              Happy New Year 2026!
             </span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-600 font-medium">
+          <p className="text-xl sm:text-2xl md:text-3xl text-gray-600 font-medium">
             You are truly special
           </p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl w-full backdrop-blur-sm border border-purple-200">
           <div className="text-center space-y-8">
-            <div className="text-7xl md:text-8xl animate-bounce">💝</div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+            <div className="text-8xl md:text-9xl animate-bounce">💝</div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
               Thank You For Being You
             </h2>
             <div className="space-y-4">
-              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+              <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
                 This year is a gift, and having you in my life makes it even
                 more special. Through every song, every wish, and every moment,
                 know that you are truly cherished.
               </p>
-              <p className="text-festive-purple font-bold text-lg">
+              <p className="text-festive-purple font-bold text-xl md:text-2xl">
                 Here's to a year filled with love, laughter, and countless
                 beautiful memories together! 💫
               </p>
             </div>
 
-            <div className="pt-8 grid grid-cols-3 gap-4 text-4xl md:text-5xl">
+            <div className="pt-8 grid grid-cols-3 gap-4 text-5xl md:text-6xl">
               <span className="animate-float">💕</span>
               <span
                 className="animate-float"
@@ -555,7 +555,7 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
         </div>
 
         <div className="mt-12 md:mt-16 text-center max-w-2xl">
-          <p className="text-gray-600 text-sm md:text-base">
+          <p className="text-gray-600 text-base md:text-lg">
             Wishing you infinite happiness and endless blessings in this new
             year! 🌟
           </p>
