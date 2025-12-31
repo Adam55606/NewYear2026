@@ -71,32 +71,20 @@ const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-export default function Index() {
-  const [personalName, setPersonalName] = useState("");
+const WishesCard = ({ onNext }: { onNext: () => void }) => {
   const [showConfetti, setShowConfetti] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
 
-  useEffect(() => {
-    if (showConfetti) {
-      const timer = setTimeout(() => setShowConfetti(false), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showConfetti]);
-
-  const handleWish = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleClick = () => {
     setShowConfetti(true);
-    setSubmitted(true);
-    setTimeout(() => setShowConfetti(false), 5000);
+    setTimeout(() => {
+      onNext();
+    }, 800);
   };
 
-  if (showIntro) {
-    return <FireworksIntro onComplete={() => setShowIntro(false)} />;
-  }
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-festive-cream via-white to-purple-100">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-festive-cream via-white to-purple-100 flex items-center justify-center px-4">
+      {showConfetti && <Confetti />}
+
       {/* Animated background orbs */}
       <AnimatedBall color="bg-festive-purple" size="w-96 h-96" delay={0} />
       <AnimatedBall color="bg-festive-pink" size="w-80 h-80" delay={2} />
@@ -110,12 +98,233 @@ export default function Index() {
       <FloatingDecoration emoji="⛄" className="top-1/2 left-8 md:left-16" />
       <FloatingDecoration emoji="🌟" className="top-1/3 right-5 md:right-12" />
 
-      {/* Confetti animation */}
-      {showConfetti && <Confetti />}
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full animate-fade-in">
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
+              Happy New Year!
+            </span>
+          </h1>
+        </div>
+
+        <button
+          onClick={handleClick}
+          className="relative bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl w-full border border-purple-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+        >
+          <div className="text-center space-y-6">
+            <div className="text-6xl md:text-7xl">💝</div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+              A Special Wish For You
+            </h2>
+            <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+              As the new year begins, I want you to know how special you are to me. This year brings new hopes, beautiful moments, and endless opportunities for us to create memories together.
+            </p>
+            <div className="pt-6">
+              <p className="text-festive-purple font-bold text-lg animate-bounce">
+                Click to continue ✨
+              </p>
+            </div>
+          </div>
+        </button>
+
+        <div className="mt-12 md:mt-16 text-center max-w-2xl">
+          <p className="text-gray-600 text-sm md:text-base">
+            Something special awaits you... 💫
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface Song {
+  id: number;
+  title: string;
+  message: string;
+  emoji: string;
+  youtubeId: string;
+}
+
+const songs: Song[] = [
+  {
+    id: 1,
+    title: "Song of Joy",
+    message: "May your heart dance with happiness all year long",
+    emoji: "🎵",
+    youtubeId: "90qE26nETds",
+  },
+  {
+    id: 2,
+    title: "Melody of Love",
+    message: "Surrounded by love, warmth, and beautiful moments",
+    emoji: "💫",
+    youtubeId: "U2SVCCENLjE",
+  },
+  {
+    id: 3,
+    title: "Song of Dreams",
+    message: "May all your dreams come true this year",
+    emoji: "✨",
+    youtubeId: "xEALTVLxrDw",
+  },
+];
+
+const SongCard = ({
+  song,
+  onPlay,
+  isPlayed,
+}: {
+  song: Song;
+  onPlay: (id: number) => void;
+  isPlayed: boolean;
+}) => {
+  return (
+    <button
+      onClick={() => onPlay(song.id)}
+      className={`group relative bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${
+        isPlayed
+          ? "border-festive-gold bg-gradient-to-br from-yellow-50 to-white"
+          : "border-purple-200 hover:border-festive-purple"
+      }`}
+    >
+      <div className="text-center space-y-4">
+        <div className="text-5xl md:text-6xl">{song.emoji}</div>
+        <h3 className="text-xl md:text-2xl font-bold text-gray-800">{song.title}</h3>
+        <p className="text-gray-600 text-sm md:text-base">{song.message}</p>
+        <div className="pt-4">
+          <p className="text-festive-purple font-bold text-sm">
+            {isPlayed ? "✅ Played" : "🎧 Click to Play"}
+          </p>
+        </div>
+      </div>
+    </button>
+  );
+};
+
+const SongsStep = ({ onNext }: { onNext: () => void }) => {
+  const [playedSongs, setPlayedSongs] = useState<number[]>([]);
+  const [showYoutube, setShowYoutube] = useState<number | null>(null);
+
+  const handlePlaySong = (id: number) => {
+    if (!playedSongs.includes(id)) {
+      setPlayedSongs([...playedSongs, id]);
+    }
+    setShowYoutube(id);
+  };
+
+  const allSongsPlayed = playedSongs.length === 3;
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-festive-cream via-white to-purple-100">
+      {/* Animated background orbs */}
+      <AnimatedBall color="bg-festive-purple" size="w-96 h-96" delay={0} />
+      <AnimatedBall color="bg-festive-pink" size="w-80 h-80" delay={2} />
+      <AnimatedBall color="bg-festive-gold" size="w-72 h-72" delay={1} />
+
+      {/* Floating decorations */}
+      <FloatingDecoration emoji="🎵" className="top-10 left-5 md:left-20 animate-pulse-glow" />
+      <FloatingDecoration emoji="💕" className="top-32 right-8 md:right-24" />
+      <FloatingDecoration emoji="🎶" className="bottom-32 left-10 md:left-32" />
+      <FloatingDecoration emoji="🎼" className="bottom-20 right-5 md:right-16" />
+
+      {/* YouTube modal */}
+      {showYoutube && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-40 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 max-w-2xl w-full">
+            <button
+              onClick={() => setShowYoutube(null)}
+              className="float-right text-gray-600 hover:text-gray-800 text-2xl mb-4"
+            >
+              ✕
+            </button>
+            <div className="aspect-video bg-black rounded-lg overflow-hidden">
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${songs.find((s) => s.id === showYoutube)?.youtubeId}?autoplay=1`}
+                title="Song"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 md:px-8">
-        {/* Header section */}
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
+              Special Songs For You
+            </span>
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 font-medium">
+            Listen to these melodies filled with love and wishes
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full mb-8">
+          {songs.map((song) => (
+            <SongCard
+              key={song.id}
+              song={song}
+              onPlay={handlePlaySong}
+              isPlayed={playedSongs.includes(song.id)}
+            />
+          ))}
+        </div>
+
+        {allSongsPlayed && (
+          <button
+            onClick={onNext}
+            className="bg-gradient-to-r from-festive-purple to-festive-pink hover:shadow-lg text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl animate-bounce"
+          >
+            Continue to Final Message 💝
+          </button>
+        )}
+
+        {!allSongsPlayed && (
+          <p className="text-gray-600 text-center text-base md:text-lg">
+            Play all {3 - playedSongs.length} more song{3 - playedSongs.length !== 1 ? "s" : ""} to continue ✨
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
+  useEffect(() => {
+    // Trigger confetti on mount
+    if (showConfetti) {
+      const timer = setTimeout(() => {
+        // Keep confetti visible
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showConfetti]);
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-festive-cream via-white to-purple-100">
+      {showConfetti && <Confetti />}
+
+      {/* Animated background orbs */}
+      <AnimatedBall color="bg-festive-purple" size="w-96 h-96" delay={0} />
+      <AnimatedBall color="bg-festive-pink" size="w-80 h-80" delay={2} />
+      <AnimatedBall color="bg-festive-gold" size="w-72 h-72" delay={1} />
+
+      {/* Floating decorations */}
+      <FloatingDecoration emoji="🎄" className="top-10 left-5 md:left-20 animate-pulse-glow" />
+      <FloatingDecoration emoji="🎅" className="top-32 right-8 md:right-24" />
+      <FloatingDecoration emoji="🎁" className="bottom-32 left-10 md:left-32" />
+      <FloatingDecoration emoji="❄️" className="bottom-20 right-5 md:right-16" />
+      <FloatingDecoration emoji="⛄" className="top-1/2 left-8 md:left-16" />
+      <FloatingDecoration emoji="🌟" className="top-1/3 right-5 md:right-12" />
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 sm:px-6 md:px-8">
         <div className="text-center mb-8 md:mb-12 max-w-4xl mx-auto">
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-4 md:mb-6">
             <span className="bg-gradient-to-r from-festive-purple via-festive-pink to-festive-gold bg-clip-text text-transparent animate-pulse-glow">
@@ -123,77 +332,82 @@ export default function Index() {
             </span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-600 font-medium">
-            A fresh start, new dreams, and endless possibilities await
+            You are truly special
           </p>
         </div>
 
-        {/* Card container */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl w-full backdrop-blur-sm border border-purple-200">
-          <div className="text-center mb-8">
-            <div className="text-6xl md:text-7xl mb-4">✨</div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-              Wish Someone Special
+          <div className="text-center space-y-8">
+            <div className="text-7xl md:text-8xl animate-bounce">💝</div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+              Thank You For Being You
             </h2>
-            <p className="text-gray-600">
-              Share your new year wishes with someone you care about
-            </p>
+            <div className="space-y-4">
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                This year is a gift, and having you in my life makes it even more special. Through every song, every wish, and every moment, know that you are truly cherished.
+              </p>
+              <p className="text-festive-purple font-bold text-lg">
+                Here's to a year filled with love, laughter, and countless beautiful memories together! 💫
+              </p>
+            </div>
+
+            <div className="pt-8 grid grid-cols-3 gap-4 text-4xl md:text-5xl">
+              <span className="animate-float">💕</span>
+              <span className="animate-float" style={{ animationDelay: "0.5s" }}>
+                ✨
+              </span>
+              <span className="animate-float" style={{ animationDelay: "1s" }}>
+                🎉
+              </span>
+            </div>
           </div>
-
-          {/* Form section */}
-          <form onSubmit={handleWish} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm md:text-base font-semibold text-gray-700 mb-3">
-                Their Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={personalName}
-                onChange={(e) => setPersonalName(e.target.value)}
-                placeholder="Enter their name..."
-                className="w-full px-6 py-3 md:py-4 border-2 border-purple-200 rounded-2xl text-base md:text-lg focus:outline-none focus:border-festive-purple focus:ring-2 focus:ring-purple-300 transition-all"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-festive-purple to-festive-pink hover:shadow-lg text-white font-bold py-3 md:py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-base md:text-lg"
-            >
-              Send New Year Wishes 🎉
-            </button>
-          </form>
-
-          {/* Personalized message */}
-          {submitted && personalName && (
-            <div className="mt-10 p-6 md:p-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border-2 border-festive-purple border-opacity-30 animate-pulse-glow">
-              <p className="text-center text-lg md:text-xl text-gray-800">
-                <span className="font-bold text-festive-purple">{personalName}</span>, may this year bring you{" "}
-                <span className="font-bold text-festive-pink">joy</span>, {" "}
-                <span className="font-bold text-festive-gold">success</span>, and{" "}
-                <span className="font-bold text-festive-purple">unforgettable memories</span>! ✨
-              </p>
-            </div>
-          )}
-
-          {/* Default message when no name entered */}
-          {submitted && !personalName && (
-            <div className="mt-10 p-6 md:p-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border-2 border-festive-purple border-opacity-30 animate-pulse-glow">
-              <p className="text-center text-lg md:text-xl text-gray-800">
-                Here's to a year filled with <span className="font-bold text-festive-pink">joy</span>, {" "}
-                <span className="font-bold text-festive-gold">growth</span>, and {" "}
-                <span className="font-bold text-festive-purple">amazing adventures</span>! 🎊
-              </p>
-            </div>
-          )}
         </div>
 
-        {/* Footer message */}
         <div className="mt-12 md:mt-16 text-center max-w-2xl">
           <p className="text-gray-600 text-sm md:text-base">
-            May every day of this new year bring you closer to your dreams and fill your heart with happiness! 💫
+            Wishing you infinite happiness and endless blessings in this new year! 🌟
           </p>
         </div>
       </div>
     </div>
+  );
+};
+
+export default function Index() {
+  const [step, setStep] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleWishesComplete = () => {
+    setStep(1);
+    setShowConfetti(true);
+  };
+
+  const handleSongsComplete = () => {
+    setStep(2);
+    setShowConfetti(true);
+  };
+
+  return (
+    <>
+      {step === 0 && <FireworksIntro onComplete={() => setStep(1)} />}
+
+      {step === 1 && (
+        <div className="transition-all duration-700 animate-fade-in">
+          <WishesCard onNext={handleWishesComplete} />
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="transition-all duration-700 animate-fade-in">
+          <SongsStep onNext={handleSongsComplete} />
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="transition-all duration-700 animate-fade-in">
+          <FinalStep showConfetti={showConfetti} />
+        </div>
+      )}
+    </>
   );
 }
