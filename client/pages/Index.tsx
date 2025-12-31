@@ -45,28 +45,89 @@ const AnimatedBall = ({ color, size, delay }: { color: string; size: string; del
   />
 );
 
+const Firework3D = ({ x, y, delay }: { x: number; y: number; delay: number }) => {
+  return (
+    <>
+      {Array.from({ length: 30 }).map((_, i) => {
+        const angle = (i / 30) * Math.PI * 2;
+        const distance = 200 + Math.random() * 100;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance - 100;
+        const tz = (Math.random() - 0.5) * 300;
+
+        return (
+          <div
+            key={i}
+            className="absolute text-xl md:text-3xl animate-spark-burst"
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: `translateX(-50%) translateY(-50%) translateZ(0)`,
+              "--tx": `${tx}px`,
+              "--ty": `${ty}px`,
+              animationDelay: `${delay}s`,
+              perspective: "1000px",
+              transformStyle: "preserve-3d",
+            } as React.CSSProperties}
+          >
+            {["✨", "💫", "🌟", "⭐"][Math.floor(Math.random() * 4)]}
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 5000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
 
+  const fireworkPositions = [
+    { x: 30, y: 35, delay: 0 },
+    { x: 70, y: 30, delay: 0.3 },
+    { x: 50, y: 50, delay: 0.6 },
+    { x: 25, y: 65, delay: 0.9 },
+    { x: 75, y: 70, delay: 1.2 },
+  ];
+
   return (
-    <div className="fixed inset-0 bg-black overflow-hidden z-50">
-      <video
-        autoPlay
-        muted
-        className="w-full h-full object-cover"
-        onEnded={onComplete}
-      >
-        <source
-          src="https://videos.pexels.com/video-files/33025238/14076807_640_360_30fps.mp4"
-          type="video/mp4"
+    <div className="fixed inset-0 bg-gradient-to-b from-gray-900 via-blue-900 to-indigo-900 overflow-hidden z-50 flex items-center justify-center">
+      {/* Twinkling stars background */}
+      {Array.from({ length: 150 }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 bg-white rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.8 + 0.2,
+            animation: `pulse ${2 + Math.random() * 3}s infinite`,
+            animationDelay: `${Math.random() * 2}s`,
+          }}
         />
-      </video>
+      ))}
+
+      {/* 3D Fireworks bursts */}
+      <div style={{ perspective: "1200px" }}>
+        {fireworkPositions.map((pos, idx) => (
+          <Firework3D key={idx} x={pos.x} y={pos.y} delay={pos.delay} />
+        ))}
+      </div>
+
+      {/* Center glow effect */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 rounded-full blur-3xl opacity-40 animate-pulse" />
+
+      {/* Completion text */}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+        <p className="text-white text-xl md:text-2xl font-bold animate-fade-in">
+          ✨ Happy New Year ✨
+        </p>
+      </div>
     </div>
   );
 };
