@@ -122,6 +122,57 @@ export default {
             transform: "translateY(100vh) rotate(360deg)",
           },
         },
+        "rocket-launch": {
+          "0%": {
+            transform: "translateY(100vh) scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translateY(-100vh) scale(1)",
+            opacity: "1",
+          },
+        },
+        "rocket-trail": {
+          "0%": {
+            opacity: "0.8",
+            height: "0",
+          },
+          "100%": {
+            opacity: "0",
+            height: "100vh",
+          },
+        },
+        "blast-explosion": {
+          "0%": {
+            opacity: "1",
+            transform: "scale(0.5)",
+          },
+          "50%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "scale(3)",
+          },
+        },
+        "spark-burst": {
+          "0%": {
+            opacity: "1",
+            transform: "translate(0, 0) scale(1)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translate(var(--tx), var(--ty))) scale(0)",
+          },
+        },
+        "fade-out": {
+          "0%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
