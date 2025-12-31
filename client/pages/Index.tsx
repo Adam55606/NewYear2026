@@ -217,7 +217,7 @@ const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
       {/* Completion text */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center z-10">
         <p className="text-white text-4xl md:text-5xl font-bold animate-fade-in">
-          ✨ Happy New Year 2026 Shweta ✨
+          ✨ Happy New Year 2026 ✨
         </p>
       </div>
     </div>
