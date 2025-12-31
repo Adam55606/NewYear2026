@@ -194,6 +194,7 @@ export default {
         "blast-explosion": "blast-explosion 1.5s ease-out forwards",
         "spark-burst": "spark-burst 1.5s ease-out forwards",
         "fade-out": "fade-out 0.8s ease-out forwards",
+        "fade-in": "fade-in 0.7s ease-out forwards",
       },
     },
   },
