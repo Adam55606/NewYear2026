@@ -296,19 +296,29 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
       <FloatingDecoration emoji="🎶" className="bottom-32 left-10 md:left-32" />
       <FloatingDecoration emoji="🎼" className="bottom-20 right-5 md:right-16" />
 
-      {/* Background music player (hidden) */}
+      {/* Background music player (hidden, continues in background) */}
       {backgroundMusicId && (
-        <audio
-          key={`bg-${backgroundMusicId}`}
-          autoPlay
-          loop
-          style={{ display: "none" }}
+        <div
+          style={{
+            position: "fixed",
+            bottom: "-1000px",
+            left: "-1000px",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            zIndex: "-1",
+          }}
         >
-          <source
-            src={`https://www.youtube.com/watch?v=${songs.find((s) => s.id === backgroundMusicId)?.youtubeId}`}
-            type="audio/mp4"
+          <iframe
+            key={`bg-music-${backgroundMusicId}`}
+            width="1"
+            height="1"
+            src={`https://www.youtube.com/embed/${songs.find((s) => s.id === backgroundMusicId)?.youtubeId}?autoplay=1&controls=0`}
+            title="Background Music"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style={{ border: "none" }}
           />
-        </audio>
+        </div>
       )}
 
       {/* YouTube modal */}
