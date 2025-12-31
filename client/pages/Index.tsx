@@ -217,7 +217,7 @@ const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
       {/* Completion text */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center z-10">
         <p className="text-white text-4xl md:text-5xl font-bold animate-fade-in">
-          ✨ Happy New Year 2026 ✨
+          ✨ Happy New Year 2026 Shweta ✨
         </p>
       </div>
     </div>
@@ -517,7 +517,7 @@ const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
             </span>
           </h1>
           <p className="text-xl sm:text-2xl md:text-3xl text-gray-600 font-medium">
-            You are truly special
+            You are truly special Shweta
           </p>
         </div>
 
