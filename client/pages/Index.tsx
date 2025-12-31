@@ -378,7 +378,7 @@ export default function Index() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleWishesComplete = () => {
-    setStep(1);
+    setStep(2);
     setShowConfetti(true);
   };
 
