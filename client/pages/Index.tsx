@@ -471,7 +471,7 @@ export default function Index() {
   };
 
   const handleSongsComplete = () => {
-    setStep(2);
+    setStep(3);
     setShowConfetti(true);
   };
 
