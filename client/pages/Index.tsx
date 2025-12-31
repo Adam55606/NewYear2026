@@ -1,5 +1,72 @@
 import { useState, useEffect } from "react";
 
+// Global animation styles
+const GlobalAnimations = () => (
+  <style>{`
+    /* Confetti pieces falling */
+    .animate-confetti-fall {
+      will-change: transform, opacity;
+      animation-name: confetti-fall;
+      animation-timing-function: cubic-bezier(.2,.8,.2,1);
+      animation-fill-mode: forwards;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-4rem) rotate(0deg); opacity: 1; }
+      70% { opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Floating orbs and icons */
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-24px) translateX(6px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Small pulsing used for stars and glows */
+    .animate-pulse-glow {
+      animation: pulse-glow 2.8s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0% { opacity: .6; transform: scale(1); filter: blur(4px); }
+      50% { opacity: 1; transform: scale(1.04); filter: blur(2px); }
+      100% { opacity: .6; transform: scale(1); filter: blur(4px); }
+    }
+
+    /* fade in */
+    .animate-fade-in {
+      animation: fade-in .6s ease both;
+    }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* fireworks spark burst - uses CSS vars --tx and --ty set inline */
+    .animate-spark-burst {
+      will-change: transform, opacity;
+      animation: spark-burst 1.2s cubic-bezier(.2,.8,.2,1) forwards;
+      opacity: 0.9;
+      transform: translate(0,0) scale(.8);
+    }
+    @keyframes spark-burst {
+      0% { transform: translate(0,0) scale(.6); opacity: 1; }
+      60% { opacity: 1; }
+      100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(1); opacity: 0; }
+    }
+
+    /* pulse animation for stars */
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+  `}</style>
+);
+
 const Confetti = () => {
   const confetti = Array.from({ length: 50 }, (_, i) => ({
     id: i,
@@ -278,11 +345,10 @@ const SongCard = ({
   return (
     <button
       onClick={() => onPlay(song.id)}
-      className={`group relative bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${
-        isPlayed
+      className={`group relative bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${isPlayed
           ? "border-festive-gold bg-gradient-to-br from-yellow-50 to-white"
           : "border-purple-200 hover:border-festive-purple"
-      }`}
+        }`}
     >
       <div className="text-center space-y-4">
         <div className="text-5xl md:text-6xl">{song.emoji}</div>
@@ -515,6 +581,9 @@ export default function Index() {
 
   return (
     <>
+      {/* Inject global animation keyframes/styles once */}
+      <GlobalAnimations />
+
       {step === 0 && <FireworksIntro onComplete={() => setStep(1)} />}
 
       {step === 1 && (
