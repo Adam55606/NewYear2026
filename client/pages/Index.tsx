@@ -45,86 +45,95 @@ const AnimatedBall = ({ color, size, delay }: { color: string; size: string; del
   />
 );
 
-const Firework3D = ({ x, y, delay }: { x: number; y: number; delay: number }) => {
-  return (
-    <>
-      {Array.from({ length: 30 }).map((_, i) => {
-        const angle = (i / 30) * Math.PI * 2;
-        const distance = 200 + Math.random() * 100;
-        const tx = Math.cos(angle) * distance;
-        const ty = Math.sin(angle) * distance - 100;
-        const tz = (Math.random() - 0.5) * 300;
-
-        return (
-          <div
-            key={i}
-            className="absolute text-xl md:text-3xl animate-spark-burst"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: `translateX(-50%) translateY(-50%) translateZ(0)`,
-              "--tx": `${tx}px`,
-              "--ty": `${ty}px`,
-              animationDelay: `${delay}s`,
-              perspective: "1000px",
-              transformStyle: "preserve-3d",
-            } as React.CSSProperties}
-          >
-            {["✨", "💫", "🌟", "⭐"][Math.floor(Math.random() * 4)]}
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
 const FireworksIntro = ({ onComplete }: { onComplete: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 4000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
 
-  const fireworkPositions = [
-    { x: 30, y: 35, delay: 0 },
-    { x: 70, y: 30, delay: 0.3 },
-    { x: 50, y: 50, delay: 0.6 },
-    { x: 25, y: 65, delay: 0.9 },
-    { x: 75, y: 70, delay: 1.2 },
-  ];
-
   return (
-    <div className="fixed inset-0 bg-gradient-to-b from-gray-900 via-blue-900 to-indigo-900 overflow-hidden z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black overflow-hidden z-50 flex items-center justify-center">
+      {/* Night sky gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-indigo-900 to-black" />
+
       {/* Twinkling stars background */}
-      {Array.from({ length: 150 }).map((_, i) => (
+      {Array.from({ length: 200 }).map((_, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 bg-white rounded-full"
+          className="absolute w-0.5 h-0.5 bg-white rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             opacity: Math.random() * 0.8 + 0.2,
-            animation: `pulse ${2 + Math.random() * 3}s infinite`,
-            animationDelay: `${Math.random() * 2}s`,
+            animation: `pulse ${2 + Math.random() * 4}s ease-in-out infinite`,
+            animationDelay: `${Math.random() * 3}s`,
           }}
         />
       ))}
 
-      {/* 3D Fireworks bursts */}
-      <div style={{ perspective: "1200px" }}>
-        {fireworkPositions.map((pos, idx) => (
-          <Firework3D key={idx} x={pos.x} y={pos.y} delay={pos.delay} />
-        ))}
-      </div>
+      {/* Multiple fireworks bursts at different positions and times */}
+      {[0, 1.5, 3].map((startDelay) =>
+        ["20", "50", "80"].map((xPos, idx) =>
+          Array.from({ length: 80 }).map((_, i) => {
+            const angle = (i / 80) * Math.PI * 2;
+            const velocity = 3 + Math.random() * 4;
+            const distance = velocity * 120;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance * 0.8 - 200;
 
-      {/* Center glow effect */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 rounded-full blur-3xl opacity-40 animate-pulse" />
+            const particleColors = [
+              "text-yellow-300",
+              "text-yellow-200",
+              "text-orange-300",
+              "text-orange-400",
+              "text-red-400",
+              "text-pink-300",
+              "text-white",
+            ];
+
+            return (
+              <div
+                key={`${startDelay}-${xPos}-${i}`}
+                className={`absolute ${particleColors[Math.floor(Math.random() * particleColors.length)]} animate-spark-burst`}
+                style={{
+                  left: `${xPos}%`,
+                  top: "50%",
+                  "--tx": `${tx}px`,
+                  "--ty": `${ty}px`,
+                  fontSize: Math.random() > 0.5 ? "16px" : "12px",
+                  animationDelay: `${startDelay}s`,
+                  opacity: 0.8,
+                } as React.CSSProperties}
+              >
+                •
+              </div>
+            );
+          })
+        )
+      )}
+
+      {/* Glowing light effects */}
+      {[0, 1.5, 3].map((delay) => (
+        <div
+          key={delay}
+          className="absolute w-80 h-80 rounded-full blur-3xl opacity-50"
+          style={{
+            left: `${20 + Math.random() * 60}%`,
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            background: `radial-gradient(circle, rgba(255,200,0,0.6) 0%, transparent 70%)`,
+            animation: `pulse 2s ease-in-out forwards`,
+            animationDelay: `${delay}s`,
+          }}
+        />
+      ))}
 
       {/* Completion text */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
-        <p className="text-white text-xl md:text-2xl font-bold animate-fade-in">
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center z-10">
+        <p className="text-white text-2xl md:text-3xl font-bold animate-fade-in">
           ✨ Happy New Year ✨
         </p>
       </div>
@@ -179,7 +188,7 @@ const WishesCard = ({ onNext }: { onNext: () => void }) => {
               A Special Wish For You
             </h2>
             <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-              As the new year begins, I want you to know how special you are to me. This year brings new hopes, beautiful moments, and endless opportunities for us to create memories together.
+              As this new year begins, I just want us to start with a heart full of hope, calm, and togetherness.
             </p>
             <div className="pt-6">
               <p className="text-festive-purple font-bold text-lg animate-bounce">
@@ -211,21 +220,21 @@ const songs: Song[] = [
   {
     id: 1,
     title: "Song of Joy",
-    message: "May your heart dance with happiness all year long",
+    message: "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
     emoji: "🎵",
     youtubeId: "90qE26nETds",
   },
   {
     id: 2,
     title: "Melody of Love",
-    message: "Surrounded by love, warmth, and beautiful moments",
+    message: "May our days be filled with calm moments, deep smiles, and better understanding — like a melody that feels just right.",
     emoji: "💫",
     youtubeId: "U2SVCCENLjE",
   },
   {
     id: 3,
     title: "Song of Dreams",
-    message: "May all your dreams come true this year",
+    message: "This new year, I wish for gentle moments, honest smiles, and a love that grows quietly stronger — just us, moving forward together.",
     emoji: "✨",
     youtubeId: "xEALTVLxrDw",
   },
@@ -255,7 +264,7 @@ const SongCard = ({
         <p className="text-gray-600 text-sm md:text-base">{song.message}</p>
         <div className="pt-4">
           <p className="text-festive-purple font-bold text-sm">
-            {isPlayed ? "✅ Played" : "🎧 Click to Play"}
+            {isPlayed ? "✅ Playing" : "🎧 Click to Play"}
           </p>
         </div>
       </div>
@@ -265,20 +274,14 @@ const SongCard = ({
 
 const SongsStep = ({ onNext }: { onNext: () => void }) => {
   const [playedSongs, setPlayedSongs] = useState<number[]>([]);
-  const [showYoutube, setShowYoutube] = useState<number | null>(null);
   const [backgroundMusicId, setBackgroundMusicId] = useState<number | null>(null);
 
   const handlePlaySong = (id: number) => {
     if (!playedSongs.includes(id)) {
       setPlayedSongs([...playedSongs, id]);
     }
-    setShowYoutube(id);
+    // Only set background music, no modal
     setBackgroundMusicId(id);
-  };
-
-  const handleCloseModal = () => {
-    setShowYoutube(null);
-    // Background music continues playing
   };
 
   const allSongsPlayed = playedSongs.length === 3;
@@ -318,30 +321,6 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             style={{ border: "none" }}
           />
-        </div>
-      )}
-
-      {/* YouTube modal */}
-      {showYoutube && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-40 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 max-w-2xl w-full">
-            <button
-              onClick={handleCloseModal}
-              className="float-right text-gray-600 hover:text-gray-800 text-2xl mb-4"
-            >
-              ✕
-            </button>
-            <div className="aspect-video bg-black rounded-lg overflow-hidden">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${songs.find((s) => s.id === showYoutube)?.youtubeId}?autoplay=1`}
-                title="Song"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
         </div>
       )}
 
@@ -395,7 +374,6 @@ const SongsStep = ({ onNext }: { onNext: () => void }) => {
 
 const FinalStep = ({ showConfetti }: { showConfetti: boolean }) => {
   useEffect(() => {
-    // Trigger confetti on mount
     if (showConfetti) {
       const timer = setTimeout(() => {
         // Keep confetti visible
